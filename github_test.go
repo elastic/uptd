@@ -56,7 +56,6 @@ func TestNewGithubProvider(t *testing.T) {
 			args: args{
 				owner: "anowner",
 				repo:  "arepo",
-				// token: "",
 			},
 			want:    nil,
 			wantErr: true,
@@ -99,7 +98,7 @@ func TestGithubProviderLatest(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    *LatestResponse
+		want    LatestResponse
 		wantErr bool
 	}{
 		{
@@ -110,7 +109,7 @@ func TestGithubProviderLatest(t *testing.T) {
 					HTMLURL: newStringP("https://host/path/version"),
 				}, nil, nil),
 			},
-			want: &LatestResponse{
+			want: LatestResponse{
 				Version:    newSemver("99.99.99"),
 				URL:        "https://host/path/version",
 				PreRelease: false,
@@ -126,7 +125,7 @@ func TestGithubProviderLatest(t *testing.T) {
 					Draft:   newBoolP(true),
 				}, nil, nil),
 			},
-			want: &LatestResponse{
+			want: LatestResponse{
 				Version:    newSemver("99.99.99"),
 				URL:        "https://host/path/version",
 				PreRelease: true,
@@ -142,7 +141,7 @@ func TestGithubProviderLatest(t *testing.T) {
 					Prerelease: newBoolP(true),
 				}, nil, nil),
 			},
-			want: &LatestResponse{
+			want: LatestResponse{
 				Version:    newSemver("99.99.99"),
 				URL:        "https://host/path/version",
 				PreRelease: true,
@@ -156,7 +155,6 @@ func TestGithubProviderLatest(t *testing.T) {
 					Name: newStringP("WHATISTHISVERSION"),
 				}, nil, nil),
 			},
-			want:    nil,
 			wantErr: true,
 		},
 		{
@@ -164,7 +162,6 @@ func TestGithubProviderLatest(t *testing.T) {
 			fields: fields{
 				latestFunc: newLatestMockFunc(nil, nil, errors.New("ERROR")),
 			},
-			want:    nil,
 			wantErr: true,
 		},
 	}

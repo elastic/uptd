@@ -36,8 +36,8 @@ unit:
 
 .PHONY: tag
 tag:
-	@ git tag $(VERSION)
+	@ git tag $(VERSION)
 
 .PHONY: release
 release:
-	@ git push upstream $(VERSION)
+	@ git push upstream $(VERSION)

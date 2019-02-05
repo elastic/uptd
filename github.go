@@ -25,6 +25,8 @@ import (
 	"golang.org/x/oauth2"
 )
 
+var _ Provider = new(GithubProvider)
+
 // GetLatestFunc is used by the GithubProvider to discover newer releases
 type GetLatestFunc func(ctx context.Context, owner, repo string) (*github.RepositoryRelease, *github.Response, error)
 
@@ -55,18 +57,18 @@ func NewGithubProvider(owner, repo, token string) (*GithubProvider, error) {
 
 // Latest queries the remote Github repository to check for a newer version of
 // the executable available.
-func (u *GithubProvider) Latest() (*LatestResponse, error) {
+func (u *GithubProvider) Latest() (LatestResponse, error) {
 	release, _, err := u.latestFunc(context.Background(), u.owner, u.repo)
 	if err != nil {
-		return nil, err
+		return LatestResponse{}, err
 	}
 
 	version, err := semver.Parse(release.GetName())
 	if err != nil {
-		return nil, err
+		return LatestResponse{}, err
 	}
 
-	return &LatestResponse{
+	return LatestResponse{
 		Version:    version,
 		URL:        release.GetHTMLURL(),
 		PreRelease: release.GetPrerelease() || release.GetDraft(),

@@ -1,4 +1,4 @@
-# Up To Date
+# Up To Date [![Build Status](https://travis-ci.org/elastic/uptd.svg?branch=master)](https://travis-ci.org/elastic/uptd)
 
 `uptd` (shorthand for _up to date_) is a Go package which provides primitives
 and mechanisms to check if a version is up to date according to the latest one

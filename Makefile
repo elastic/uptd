@@ -1,4 +1,4 @@
-export VERSION := v1.0.0
+export VERSION := v1.0.2
 
 GOLINT_PRESENT := $(shell command -v golint 2> /dev/null)
 GOIMPORTS_PRESENT := $(shell command -v goimports 2> /dev/null)

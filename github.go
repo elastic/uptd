@@ -19,6 +19,7 @@ package uptd
 
 import (
 	"context"
+	"strings"
 
 	"github.com/blang/semver"
 	"github.com/google/go-github/github"
@@ -63,7 +64,7 @@ func (u *GithubProvider) Latest() (LatestResponse, error) {
 		return LatestResponse{}, err
 	}
 
-	version, err := semver.Parse(release.GetName())
+	version, err := semver.Parse(strings.TrimPrefix(release.GetTagName(), "v"))
 	if err != nil {
 		return LatestResponse{}, err
 	}

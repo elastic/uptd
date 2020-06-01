@@ -105,7 +105,22 @@ func TestGithubProviderLatest(t *testing.T) {
 			name: "Latest() call succeeds",
 			fields: fields{
 				latestFunc: newLatestMockFunc(&github.RepositoryRelease{
-					Name:    newStringP("99.99.99"),
+					TagName: newStringP("99.99.99"),
+					HTMLURL: newStringP("https://host/path/version"),
+				}, nil, nil),
+			},
+			want: LatestResponse{
+				Version:    newSemver("99.99.99"),
+				URL:        "https://host/path/version",
+				PreRelease: false,
+			},
+			wantErr: false,
+		},
+		{
+			name: "Latest() call succeeds when the release name has a v prefix",
+			fields: fields{
+				latestFunc: newLatestMockFunc(&github.RepositoryRelease{
+					TagName: newStringP("v99.99.99"),
 					HTMLURL: newStringP("https://host/path/version"),
 				}, nil, nil),
 			},
@@ -120,7 +135,7 @@ func TestGithubProviderLatest(t *testing.T) {
 			name: "Latest() call succeeds with Prerelease true",
 			fields: fields{
 				latestFunc: newLatestMockFunc(&github.RepositoryRelease{
-					Name:    newStringP("99.99.99"),
+					TagName: newStringP("99.99.99"),
 					HTMLURL: newStringP("https://host/path/version"),
 					Draft:   newBoolP(true),
 				}, nil, nil),
@@ -136,7 +151,7 @@ func TestGithubProviderLatest(t *testing.T) {
 			name: "Latest() call succeeds with Prerelease true",
 			fields: fields{
 				latestFunc: newLatestMockFunc(&github.RepositoryRelease{
-					Name:       newStringP("99.99.99"),
+					TagName:    newStringP("99.99.99"),
 					HTMLURL:    newStringP("https://host/path/version"),
 					Prerelease: newBoolP(true),
 				}, nil, nil),
@@ -152,7 +167,7 @@ func TestGithubProviderLatest(t *testing.T) {
 			name: "Latest() call fails due wrong semver version",
 			fields: fields{
 				latestFunc: newLatestMockFunc(&github.RepositoryRelease{
-					Name: newStringP("WHATISTHISVERSION"),
+					TagName: newStringP("WHATISTHISVERSION"),
 				}, nil, nil),
 			},
 			wantErr: true,
